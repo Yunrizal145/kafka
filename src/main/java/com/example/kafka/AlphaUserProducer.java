@@ -1,13 +1,18 @@
 package com.example.kafka;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AlphaUserProducer {
-    private static final String TOPIC = "user-profiles";
-    private static final int MINIMUM_PROFILES = 1000;
+
+    @Value("${spring.kafka.bootstrap-servers}")
+    private String bootstrapServers;
+
+    @Value("${spring.kafka.consumer.group-id}")
+    private String groupId;
 
     private final KafkaTemplate<String, UserBio> kafkaTemplate;
 
@@ -17,18 +22,17 @@ public class AlphaUserProducer {
     }
 
     public void produceUserProfiles() {
-        for (int i = 0; i < MINIMUM_PROFILES; i++) {
+        for (int i = 0; i < 100; i++) {
             UserBio userBio = generateRandomUserProfile();
-            kafkaTemplate.send(TOPIC, userBio);
+            kafkaTemplate.send("yunrizal", userBio);
         }
     }
 
     private UserBio generateRandomUserProfile() {
-        // Logic to generate a random user profile
-        // Example:
+
         UserBio userBio = new UserBio();
-        userBio.setName("User1");
-        userBio.setAddress("Bandung");
+        userBio.setName("Yunrizal");
+        userBio.setAddress("Sukabumi");
         userBio.setPhone("0882938457759");
         userBio.setAge((int) (Math.random() * 100)); // Random age
 

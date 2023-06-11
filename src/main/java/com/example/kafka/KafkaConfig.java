@@ -26,6 +26,7 @@ public class KafkaConfig {
     @Value("${spring.kafka.consumer.group-id}")
     private String groupId;
 
+
     @Bean
     public ProducerFactory<String, UserBio> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
